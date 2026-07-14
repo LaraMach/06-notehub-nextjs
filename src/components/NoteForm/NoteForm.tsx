@@ -1,8 +1,11 @@
+"use client";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
+import type { Note } from "@/types/note";
 
-import { createNote } from "../../services/noteService";
+import { createNote, type CreateNoteData } from "@/lib/api/notes";
 import css from "./NoteForm.module.css";
 
 interface NoteFormValues {
@@ -37,7 +40,7 @@ const validationSchema = Yup.object({
 function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const mutation = useMutation<Note, Error, CreateNoteData>({
     mutationFn: createNote,
 
     onSuccess: () => {
